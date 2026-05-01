@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>BarboBank - Estudio de Crédito!</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #0d1b3e 0%, #185FA5 45%, #0a2540 100%);
+      display: flex;
+      justify-content: center;
+      padding: 2.5rem 1rem 3rem;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(55,138,221,0.35) 0%, transparent 70%);
+      top: -150px; right: -150px;
+      border-radius: 50%;
+      animation: pulse-orb 6s ease-in-out infinite alternate;
+      pointer-events: none;
+    }
+    body::after {
+      content: '';
+      position: fixed;
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(24,95,165,0.3) 0%, transparent 70%);
+      bottom: -100px; left: -100px;
+      border-radius: 50%;
+      animation: pulse-orb 8s ease-in-out infinite alternate-reverse;
+      pointer-events: none;
+    }
+
+    @keyframes pulse-orb {
+      from { transform: scale(1) translate(0,0); opacity: 0.6; }
+      to   { transform: scale(1.15) translate(20px,20px); opacity: 1; }
+    }
+
+    .wrap {
+      width: 100%;
+      max-width: 500px;
+      position: relative;
+      z-index: 2;
+      animation: slide-up 0.7s cubic-bezier(.22,1,.36,1) both;
+    }
+
+    @keyframes slide-up {
+      from { opacity: 0; transform: translateY(32px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .logo {
+      font-size: 28px;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 0.25rem;
+      letter-spacing: -0.5px;
+    }
+    .logo span { color: #78b9f5; }
+
+    .sub {
+      font-size: 13px;
+      color: rgba(255,255,255,0.55);
+      margin-bottom: 1.75rem;
+    }
+
+    .card {
+      background: rgba(255,255,255,0.10);
+      backdrop-filter: blur(22px);
+      -webkit-backdrop-filter: blur(22px);
+      border-radius: 20px;
+      border: 1px solid rgba(255,255,255,0.2);
+      padding: 1.75rem;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.18);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .field { display: flex; flex-direction: column; gap: 5px; }
+    .field.full { grid-column: 1 / -1; }
+
+    label {
+      font-size: 11px;
+      font-weight: 500;
+      color: rgba(255,255,255,0.6);
+      letter-spacing: 0.4px;
+      text-transform: uppercase;
+    }
+
+    input {
+      height: 42px;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.18);
+      background: rgba(255,255,255,0.08);
+      padding: 0 12px;
+      font-size: 14px;
+      color: #fff;
+      outline: none;
+      font-family: 'Inter', sans-serif;
+      transition: border-color 0.2s, background 0.2s, box-shadow 0.2s, transform 0.15s;
+    }
+    input::placeholder { color: rgba(255,255,255,0.3); }
+    input:focus {
+      border-color: rgba(120,185,245,0.7);
+      background: rgba(255,255,255,0.15);
+      box-shadow: 0 0 0 3px rgba(55,138,221,0.25);
+      transform: translateY(-1px);
+    }
+    input:hover:not(:focus) {
+      border-color: rgba(255,255,255,0.3);
+      background: rgba(255,255,255,0.11);
+    }
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button { opacity: 0.4; }
+
+    .btn-primary {
+      width: 100%;
+      height: 48px;
+      border-radius: 12px;
+      border: none;
+      background: linear-gradient(135deg, #378ADD 0%, #185FA5 100%);
+      color: #fff;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 1rem;
+      font-family: 'Inter', sans-serif;
+      letter-spacing: 0.2px;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.15s, box-shadow 0.2s;
+      box-shadow: 0 4px 20px rgba(55,138,221,0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .btn-primary::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, transparent 60%);
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(55,138,221,0.55);
+    }
+    .btn-primary:active { transform: translateY(0); }
+    .btn-primary:disabled {
+      background: rgba(255,255,255,0.15);
+      box-shadow: none;
+      cursor: not-allowed;
+    }
+
+    .btn-agent {
+      width: 100%;
+      height: 46px;
+      border-radius: 12px;
+      border: 1px solid rgba(120,185,245,0.4);
+      background: rgba(55,138,221,0.12);
+      color: #78b9f5;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      margin-top: 10px;
+      font-family: 'Inter', sans-serif;
+      display: none;
+      transition: background 0.2s, border-color 0.2s, transform 0.15s;
+    }
+    .btn-agent:hover {
+      background: rgba(55,138,221,0.22);
+      border-color: rgba(120,185,245,0.7);
+      transform: translateY(-1px);
+    }
+
+    .spinner {
+      width: 18px; height: 18px;
+      border: 2px solid rgba(255,255,255,0.35);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      display: none;
+      flex-shrink: 0;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .error-msg {
+      color: #F09595;
+      font-size: 13px;
+      margin-top: 0.75rem;
+      display: none;
+    }
+
+    .shimmer-row {
+      display: none;
+      gap: 8px;
+      margin-top: 1.5rem;
+    }
+    .shimmer {
+      height: 74px;
+      flex: 1;
+      border-radius: 10px;
+      background: linear-gradient(90deg,
+        rgba(255,255,255,0.06) 25%,
+        rgba(255,255,255,0.13) 50%,
+        rgba(255,255,255,0.06) 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.4s infinite;
+    }
+    @keyframes shimmer {
+      from { background-position: 200% 0; }
+      to   { background-position: -200% 0; }
+    }
+
+    .resultado {
+      margin-top: 1.5rem;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,0.15);
+      background: rgba(255,255,255,0.07);
+      backdrop-filter: blur(12px);
+      padding: 1.25rem;
+      display: none;
+      animation: pop-in 0.45s cubic-bezier(.22,1,.36,1) both;
+    }
+    @keyframes pop-in {
+      from { opacity: 0; transform: scale(0.95) translateY(10px); }
+      to   { opacity: 1; transform: scale(1) translateY(0); }
+    }
+    .resultado.aprobado {
+      border-color: rgba(29,158,117,0.5);
+      background: rgba(29,158,117,0.1);
+    }
+    .resultado.rechazado {
+      border-color: rgba(163,45,45,0.5);
+      background: rgba(163,45,45,0.1);
+    }
+
+    .res-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 1rem;
+    }
+    .res-titulo {
+      font-size: 17px;
+      font-weight: 600;
+      color: #fff;
+    }
+    .badge {
+      font-size: 11px;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-weight: 500;
+    }
+    .badge.ok {
+      background: rgba(29,158,117,0.25);
+      color: #5DCAA5;
+      border: 1px solid rgba(29,158,117,0.4);
+    }
+    .badge.no {
+      background: rgba(163,45,45,0.25);
+      color: #F09595;
+      border: 1px solid rgba(163,45,45,0.4);
+    }
+
+    .res-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 8px;
+    }
+    .res-card {
+      background: rgba(255,255,255,0.08);
+      border-radius: 10px;
+      padding: 10px 12px;
+      border: 1px solid rgba(255,255,255,0.1);
+      transition: background 0.2s, transform 0.15s;
+    }
+    .res-card:hover {
+      background: rgba(255,255,255,0.13);
+      transform: translateY(-1px);
+    }
+    .res-label {
+      font-size: 10px;
+      color: rgba(255,255,255,0.5);
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      margin-bottom: 4px;
+    }
+    .res-val {
+      font-size: 20px;
+      font-weight: 600;
+      color: #fff;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="wrap">
+  <div class="logo">Barbo<span>Bank</span></div>
+  <p class="sub">Estudio de crédito! — completa los datos</p>
+
+  <div class="card">
+
+    <div class="grid">
+      <div class="field full">
+        <label>Nombre</label>
+        <input id="nombre" placeholder="Tu nombre completo">
+      </div>
+      <div class="field full">
+        <label>Cédula</label>
+        <input id="cedula" type="number" placeholder="1234567890">
+      </div>
+      <div class="field">
+        <label>Email</label>
+        <input id="email" placeholder="correo@ejemplo.com">
+      </div>
+      <div class="field">
+        <label>Edad</label>
+        <input id="edad" type="number" placeholder="28">
+      </div>
+      <div class="field">
+        <label>Salario</label>
+        <input id="salario" type="number" placeholder="3000000">
+      </div>
+      <div class="field">
+        <label>Gastos mensuales</label>
+        <input id="gastos_mensuales" type="number" placeholder="1200000">
+      </div>
+      <div class="field">
+        <label>Meses cliente</label>
+        <input id="meses_cliente" type="number" placeholder="12">
+      </div>
+      <div class="field">
+        <label>Créditos activos</label>
+        <input id="creditos_activos" type="number" placeholder="1">
+      </div>
+      <div class="field">
+        <label>Retrasos previos</label>
+        <input id="retrasos_previos" type="number" placeholder="0">
+      </div>
+    </div>
+
+    <button class="btn-primary" id="btn" onclick="hacerEstudio()">
+      <span id="btn-txt">Hacer estudio</span>
+      <div class="spinner" id="spinner"></div>
+    </button>
+
+    <p class="error-msg" id="error"></p>
+
+    <div class="shimmer-row" id="shimmer-row">
+      <div class="shimmer"></div>
+      <div class="shimmer"></div>
+      <div class="shimmer"></div>
+    </div>
+
+    <div class="resultado" id="resultado">
+      <div class="res-header">
+        <span class="res-titulo" id="res-decision">Resultado</span>
+        <span class="badge" id="badge"></span>
+      </div>
+      <div class="res-grid">
+        <div class="res-card">
+          <div class="res-label">Score</div>
+          <div class="res-val" id="res-score">—</div>
+        </div>
+        <div class="res-card">
+          <div class="res-label">Ratio</div>
+          <div class="res-val" id="res-ratio">—</div>
+        </div>
+        <div class="res-card">
+          <div class="res-label">Default</div>
+          <div class="res-val" id="res-prob">—</div>
+        </div>
+      </div>
+    </div>
+
+    <button class="btn-agent" id="btn-agente" onclick="irAlAgente()">
+      Hablar con el asistente ↗
+    </button>
+
+  </div>
+</div>
+
+<script>
+async function hacerEstudio() {
+  const btn     = document.getElementById('btn');
+  const txt     = document.getElementById('btn-txt');
+  const spin    = document.getElementById('spinner');
+  const errEl   = document.getElementById('error');
+  const shimmer = document.getElementById('shimmer-row');
+
+  errEl.style.display = 'none';
+
+  const datos = {
+    nombre:           document.getElementById('nombre').value,
+    email:            document.getElementById('email').value,
+    edad:             parseInt(document.getElementById('edad').value),
+    salario:          parseFloat(document.getElementById('salario').value),
+    gastos_mensuales: parseFloat(document.getElementById('gastos_mensuales').value),
+    meses_cliente:    parseInt(document.getElementById('meses_cliente').value),
+    creditos_activos: parseInt(document.getElementById('creditos_activos').value),
+    retrasos_previos: parseInt(document.getElementById('retrasos_previos').value),
+    cedula: parseInt(document.getElementById('cedula').value),
+  };
+
+  btn.disabled = true;
+  txt.style.display = 'none';
+  spin.style.display = 'block';
+  shimmer.style.display = 'flex';
+  document.getElementById('resultado').style.display = 'none';
+
+  try {
+    const res = await fetch('http://127.0.0.1:8000/credit/solicitud', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(datos)
+    });
+
+    const json = await res.json();
+    const r = json.data.resultado;
+
+    shimmer.style.display = 'none';
+
+    const el = document.getElementById('resultado');
+    el.style.display = 'block';
+
+    const aprobado = r.decision && r.decision.toLowerCase().includes('aprobad');
+    el.className = 'resultado ' + (aprobado ? 'aprobado' : 'rechazado');
+
+    document.getElementById('res-decision').textContent = r.decision;
+
+    const badge = document.getElementById('badge');
+    badge.textContent = aprobado ? 'Aprobado' : 'Rechazado';
+    badge.className   = 'badge ' + (aprobado ? 'ok' : 'no');
+
+    document.getElementById('res-score').textContent = r.score_crediticio    ?? '—';
+    document.getElementById('res-ratio').textContent = r.ratio_endeudamiento ?? '—';
+    document.getElementById('res-prob').textContent  = r.probabilidad_default ?? '—';
+
+    localStorage.setItem('cliente', JSON.stringify(r));
+    document.getElementById('btn-agente').style.display = 'block';
+
+  } catch (e) {
+    shimmer.style.display = 'none';
+    errEl.textContent  = 'Error al conectar con el servidor.';
+    errEl.style.display = 'block';
+
+  } finally {
+    btn.disabled        = false;
+    txt.style.display   = 'inline';
+    spin.style.display  = 'none';
+  }
+}
+
+function irAlAgente() {
+  window.location.href = '/chat';
+}
+</script>
+
+</body>
+</html>

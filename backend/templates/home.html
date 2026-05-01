@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:'DM Sans',sans-serif;
+    background:linear-gradient(135deg,#0d1b3e 0%,#185FA5 45%,#0a2540 100%);
+    min-height:100vh;
+    color:#fff;
+    overflow-x:hidden;
+  }
+  .hero{
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:2rem;
+    position:relative;
+  }
+  .hero-label{
+    font-size:11px;letter-spacing:3px;text-transform:uppercase;
+    color:rgba(120,185,245,0.8);margin-bottom:1rem;
+    opacity:0;animation:fadeUp 0.8s 0.2s forwards;
+  }
+  .hero h1{
+    font-family:'DM Serif Display',serif;
+    font-size:clamp(3rem,8vw,6.5rem);line-height:1;margin-bottom:1.5rem;
+    opacity:0;animation:fadeUp 0.8s 0.4s forwards;
+  }
+  .hero h1 em{font-style:italic;color:#78b9f5}
+  .hero-sub{
+    max-width:560px;font-size:1.05rem;line-height:1.7;
+    color:rgba(255,255,255,0.6);
+    opacity:0;animation:fadeUp 0.8s 0.6s forwards;margin-bottom:2.5rem;
+  }
+  .hero-scroll{
+    display:flex;flex-direction:column;align-items:center;gap:6px;
+    color:rgba(255,255,255,0.4);font-size:11px;letter-spacing:2px;text-transform:uppercase;
+    opacity:0;animation:fadeUp 0.8s 1s forwards;
+    position:absolute;bottom:2.5rem;
+  }
+  .scroll-line{
+    width:1px;height:40px;
+    background:linear-gradient(to bottom,rgba(120,185,245,0.6),transparent);
+    animation:scrollPulse 2s ease-in-out infinite;
+  }
+  @keyframes scrollPulse{0%,100%{opacity:0.4;transform:scaleY(0.8)}50%{opacity:1;transform:scaleY(1)}}
+  .section{padding:6rem 1.5rem;max-width:900px;margin:0 auto}
+  .sec-num{
+    font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#378ADD;margin-bottom:0.5rem;
+    opacity:0;transition:opacity 0.6s,transform 0.6s;transform:translateY(20px);
+  }
+  .sec-title{
+    font-family:'DM Serif Display',serif;font-size:clamp(1.8rem,4vw,2.8rem);line-height:1.15;margin-bottom:1.5rem;
+    opacity:0;transition:opacity 0.7s 0.1s,transform 0.7s 0.1s;transform:translateY(24px);
+  }
+  .sec-body{
+    font-size:1rem;line-height:1.85;color:rgba(255,255,255,0.65);
+    opacity:0;transition:opacity 0.7s 0.2s,transform 0.7s 0.2s;transform:translateY(24px);
+  }
+  .pills{
+    display:flex;flex-wrap:wrap;gap:8px;margin-top:1.25rem;
+    opacity:0;transition:opacity 0.7s 0.35s,transform 0.7s 0.35s;transform:translateY(20px);
+  }
+  .pill{
+    padding:6px 14px;border-radius:100px;
+    border:1px solid rgba(120,185,245,0.35);background:rgba(55,138,221,0.1);
+    font-size:13px;color:#78b9f5;backdrop-filter:blur(6px);
+  }
+  .cards{
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-top:1.5rem;
+    opacity:0;transition:opacity 0.7s 0.3s,transform 0.7s 0.3s;transform:translateY(24px);
+  }
+  .card{
+    background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.13);
+    border-radius:16px;padding:1.25rem;backdrop-filter:blur(12px);
+  }
+  .card-label{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.4);margin-bottom:0.5rem}
+  .card-title{font-family:'DM Serif Display',serif;font-size:1.1rem;margin-bottom:0.4rem}
+  .card-body{font-size:13px;color:rgba(255,255,255,0.55);line-height:1.6}
+  .decision-row{
+    display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:1.5rem;
+    opacity:0;transition:opacity 0.7s 0.3s,transform 0.7s 0.3s;transform:translateY(24px);
+  }
+  .dec-box{border-radius:16px;padding:1.25rem 1.5rem;border:1px solid}
+  .dec-box.ok{background:rgba(29,158,117,0.1);border-color:rgba(29,158,117,0.4)}
+  .dec-box.no{background:rgba(163,45,45,0.1);border-color:rgba(163,45,45,0.4)}
+  .dec-top{font-size:11px;letter-spacing:2px;text-transform:uppercase;margin-bottom:0.5rem}
+  .dec-box.ok .dec-top{color:#5DCAA5}
+  .dec-box.no .dec-top{color:#F09595}
+  .dec-pct{font-family:'DM Serif Display',serif;font-size:2.2rem}
+  .dec-desc{font-size:13px;color:rgba(255,255,255,0.55);margin-top:4px}
+  .stack-grid{
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-top:1.5rem;
+    opacity:0;transition:opacity 0.7s 0.3s,transform 0.7s 0.3s;transform:translateY(24px);
+  }
+  .stack-cat{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:14px;padding:1rem 1.1rem}
+  .stack-cat-name{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#378ADD;margin-bottom:0.6rem}
+  .stack-item{font-size:13px;color:rgba(255,255,255,0.65);padding:3px 0;border-bottom:1px solid rgba(255,255,255,0.06);line-height:1.5}
+  .stack-item:last-child{border-bottom:none}
+  .visible .sec-num,.visible .sec-title,.visible .sec-body,
+  .visible .pills,.visible .cards,.visible .decision-row,.visible .stack-grid{
+    opacity:1;transform:translateY(0);
+  }
+  @keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+  .orb{position:fixed;border-radius:50%;pointer-events:none;opacity:0.25;filter:blur(80px);animation:orbFloat 10s ease-in-out infinite alternate}
+  .orb1{width:500px;height:500px;background:#378ADD;top:-100px;right:-100px}
+  .orb2{width:400px;height:400px;background:#185FA5;bottom:-80px;left:-80px;animation-delay:-4s}
+  @keyframes orbFloat{from{transform:translate(0,0) scale(1)}to{transform:translate(30px,20px) scale(1.1)}}
+  .sec-rule{border:none;border-top:1px solid rgba(255,255,255,0.07);margin:0 auto;max-width:900px}
+
+  /* CTA final */
+  .cta-section{
+    text-align:center;
+    padding:5rem 1.5rem 7rem;
+    opacity:0;
+    transition:opacity 0.8s,transform 0.8s;
+    transform:translateY(30px);
+  }
+  .cta-section.visible{opacity:1;transform:translateY(0)}
+
+  .btn-start{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    padding:16px 40px;
+    border-radius:100px;
+    border:none;
+    background:linear-gradient(135deg,#378ADD 0%,#185FA5 100%);
+    color:#fff;
+    font-family:'DM Sans',sans-serif;
+    font-size:16px;
+    font-weight:500;
+    cursor:pointer;
+    letter-spacing:0.3px;
+    box-shadow:0 6px 30px rgba(55,138,221,0.45);
+    transition:transform 0.2s,box-shadow 0.2s;
+    position:relative;
+    overflow:hidden;
+  }
+  .btn-start::before{
+    content:'';
+    position:absolute;inset:0;
+    background:linear-gradient(135deg,rgba(255,255,255,0.15) 0%,transparent 60%);
+  }
+  .btn-start:hover{
+    transform:translateY(-3px);
+    box-shadow:0 12px 40px rgba(55,138,221,0.65);
+  }
+  .btn-start:active{transform:translateY(0)}
+  .btn-arrow{
+    width:20px;height:20px;
+    border-radius:50%;
+    background:rgba(255,255,255,0.2);
+    display:flex;align-items:center;justify-content:center;
+    font-size:13px;
+    transition:transform 0.2s;
+  }
+  .btn-start:hover .btn-arrow{transform:translateX(3px)}
+</style>
+</head>
+<body>
+
+<div class="orb orb1"></div>
+<div class="orb orb2"></div>
+
+<section class="hero">
+  <p class="hero-label">Sistema de evaluación crediticia</p>
+  <h1>Barbo<em>Bank</em></h1>
+  <p class="hero-sub">Una simulación de aprobación de créditos que combina lógica de negocio tradicional con Machine Learning para tomar decisiones automatizadas.</p>
+  <div class="hero-scroll">
+    <span>Explorar</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<hr class="sec-rule">
+
+<section class="section reveal" id="s1">
+  <p class="sec-num">01 — Descripción general</p>
+  <h2 class="sec-title">¿Qué es BarboBank?</h2>
+  <p class="sec-body">BarboBank es una simulación de un sistema de aprobación de créditos que evalúa solicitudes a partir de variables financieras y personales. Su objetivo es mostrar de forma práctica cómo un sistema puede tomar decisiones automatizadas combinando lógica de negocio tradicional con modelos de Machine Learning.</p>
+</section>
+
+<hr class="sec-rule">
+
+<section class="section reveal" id="s2">
+  <p class="sec-num">02 — Funcionamiento</p>
+  <h2 class="sec-title">¿Qué información necesita?</h2>
+  <p class="sec-body">El usuario proporciona datos personales y financieros. A partir de ellos, el sistema calcula internamente el score crediticio y el ratio de endeudamiento — sin que el usuario los ingrese directamente.</p>
+  <div class="pills">
+    <span class="pill">Edad</span>
+    <span class="pill">Salario</span>
+    <span class="pill">Gastos actuales</span>
+    <span class="pill">Historial de retrasos</span>
+    <span class="pill">Meses como cliente</span>
+    <span class="pill">Score crediticio (interno)</span>
+    <span class="pill">Ratio de endeudamiento (interno)</span>
+  </div>
+</section>
+
+<hr class="sec-rule">
+
+<section class="section reveal" id="s3">
+  <p class="sec-num">03 — Lógica de decisión</p>
+  <h2 class="sec-title">¿Cómo decide el sistema?</h2>
+  <p class="sec-body">Un modelo de Machine Learning calcula la probabilidad de incumplimiento de pago (default). Esta probabilidad define si el crédito se aprueba o rechaza.</p>
+  <div class="decision-row">
+    <div class="dec-box ok">
+      <p class="dec-top">Aprobado</p>
+      <p class="dec-pct">≤ 40%</p>
+      <p class="dec-desc">Probabilidad de default — crédito otorgado</p>
+    </div>
+    <div class="dec-box no">
+      <p class="dec-top">Rechazado</p>
+      <p class="dec-pct">&gt; 40%</p>
+      <p class="dec-desc">Probabilidad de default — solicitud denegada</p>
+    </div>
+  </div>
+</section>
+
+<hr class="sec-rule">
+
+<section class="section reveal" id="s4">
+  <p class="sec-num">04 — Enfoque investigativo</p>
+  <h2 class="sec-title">Un proyecto exploratorio</h2>
+  <p class="sec-body">Este proyecto no busca replicar exactamente un banco real. Simplifica el proceso de evaluación crediticia para entender cómo funcionan los sistemas de decisión automatizados, el uso de ML en backend e integracion de Agentes de IA </p>
+  <div class="cards">
+    <div class="card">
+      <p class="card-label">Reconocimiento</p>
+      <p class="card-title">Limitaciones conscientes</p>
+      <p class="card-body">Los bancos reales usan muchos más parámetros y controles de verificación adicionales.</p>
+    </div>
+    <div class="card">
+      <p class="card-label">Objetivo</p>
+      <p class="card-title">Aprendizaje práctico</p>
+      <p class="card-body">Permite entender cómo se integran modelos de ML en flujos de decisión real.</p>
+    </div>
+  </div>
+</section>
+
+<hr class="sec-rule">
+
+<section class="section reveal" id="s5">
+  <p class="sec-num">05 — Agente de IA</p>
+  <h2 class="sec-title">Tu asesor financiero conversacional</h2>
+  <p class="sec-body">Después de completar la solicitud, el sistema habilita un agente de IA que accede a la base de datos mediante la cédula del usuario. Puede consultar información, explicar decisiones y resolver dudas sobre la situación crediticia.</p>
+  <div class="cards">
+    <div class="card">
+      <p class="card-label">Capacidad</p>
+      <p class="card-title">Consulta de datos</p>
+      <p class="card-body">Accede a la información del cliente directamente desde la base de datos.</p>
+    </div>
+    <div class="card">
+      <p class="card-label">Capacidad</p>
+      <p class="card-title">Explicación de decisiones</p>
+      <p class="card-body">Justifica por qué fue aprobado o rechazado el crédito.</p>
+    </div>
+    <div class="card">
+      <p class="card-label">Integración</p>
+      <p class="card-title">IA conversacional</p>
+      <p class="card-body">Demuestra cómo integrar agentes de IA con sistemas empresariales.</p>
+    </div>
+  </div>
+</section>
+
+<hr class="sec-rule">
+
+<section class="section reveal" id="s6">
+  <p class="sec-num">06 — Stack tecnológico</p>
+  <h2 class="sec-title">Construido con tecnologías modernas</h2>
+  <p class="sec-body">Cada capa del sistema está diseñada con herramientas de producción reales.</p>
+  <div class="stack-grid">
+    <div class="stack-cat">
+      <p class="stack-cat-name">Backend</p>
+      <p class="stack-item">FastAPI</p>
+      <p class="stack-item">Uvicorn</p>
+    </div>
+    <div class="stack-cat">
+      <p class="stack-cat-name">Base de datos</p>
+      <p class="stack-item">MySQL</p>
+      <p class="stack-item">SQLModel</p>
+      <p class="stack-item">PyMySQL</p>
+    </div>
+    <div class="stack-cat">
+      <p class="stack-cat-name">Machine Learning</p>
+      <p class="stack-item">Scikit-learn</p>
+      <p class="stack-item">Pandas</p>
+      <p class="stack-item">Joblib</p>
+    </div>
+    <div class="stack-cat">
+      <p class="stack-cat-name">IA</p>
+      <p class="stack-item">LangChain</p>
+      <p class="stack-item">LangChain OpenAI</p>
+      <p class="stack-item">LangChain Community</p>
+    </div>
+    <div class="stack-cat">
+      <p class="stack-cat-name">Infraestructura</p>
+      <p class="stack-item">Docker</p>
+      <p class="stack-item">Pydantic</p>
+      <p class="stack-item">Python-dotenv</p>
+    </div>
+  </div>
+</section>
+
+<!-- CTA final -->
+<div class="cta-section reveal">
+  <button class="btn-start" onclick="irAFormulario()">
+    Empezar simulación
+    <span class="btn-arrow">→</span>
+  </button>
+</div>
+
+<script>
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+  },{threshold:0.18});
+  reveals.forEach(r => observer.observe(r));
+
+  function irAFormulario(){
+    window.location.href = "/formulario";
+  }
+</script>
+</body>
+</html>
