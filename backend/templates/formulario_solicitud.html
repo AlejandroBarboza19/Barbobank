@@ -404,6 +404,8 @@ async function hacerEstudio() {
   const spin    = document.getElementById('spinner');
   const errEl   = document.getElementById('error');
   const shimmer = document.getElementById('shimmer-row');
+  const BASE_URL = 'http://3.14.3.233:8000'
+
 
   errEl.style.display = 'none';
 
@@ -425,12 +427,12 @@ async function hacerEstudio() {
   shimmer.style.display = 'flex';
   document.getElementById('resultado').style.display = 'none';
 
-  try {
-    const res = await fetch('http://127.0.0.1:8000/credit/solicitud', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(datos)
-    });
+const res = await fetch(`${BASE_URL}/credit/solicitud`, {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify(datos)
+});
+
 
     const json = await res.json();
     const r = json.data.resultado;
