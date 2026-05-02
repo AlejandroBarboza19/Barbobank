@@ -427,12 +427,12 @@ async function hacerEstudio() {
   shimmer.style.display = 'flex';
   document.getElementById('resultado').style.display = 'none';
 
-const res = await fetch(`${BASE_URL}/credit/solicitud`, {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify(datos)
-});
-
+  try {
+  const res = await fetch(`${BASE_URL}/credit/solicitud`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(datos)
+  });
 
     const json = await res.json();
     const r = json.data.resultado;
