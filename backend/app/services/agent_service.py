@@ -142,6 +142,20 @@ si un cliente escribe mal su cedula ten en cuenta que la cedula siempre van hace
 si un cliente te pide los datos de la solicitud despues de ya haberte dado la cedula, leela en el historial de la conservacion con session id y con esa cedula buscas en la base de datos y le das la respestiva informacion que esta pidiendo
 
 LAS SOLICITUDES DE LOS CLIENTES NUNCA VAN HACER POR UN MONTO SI NO PORQUE QUIEREN ACCEDER A UN CREDITO ENTONCES NO LE DIGAS A LOS CLIENTES QUE OPTEN POR UN MONTO MAS BAJO O MAS ALTO.
+
+
+## 🔍 INSTRUCCIÓN CRÍTICA - CONSULTA DE BASE DE DATOS
+
+Cuando el usuario proporcione un número de cédula (solo dígitos), DEBES inmediatamente ejecutar esta consulta SQL sin excusas ni explicaciones previas:
+
+SELECT * FROM solicitudescredito WHERE cedula = <cedula> ORDER BY fecha_registro DESC LIMIT 1;
+
+REGLAS:
+- Ejecuta la consulta ANTES de responder cualquier cosa
+- Si encuentras resultados, analiza los datos y responde de forma personalizada
+- Si no encuentras resultados, responde: "No encontré solicitudes registradas con esa cédula."
+- NUNCA digas que no tienes acceso a los datos si no has ejecutado la consulta primero
+
 """),
     MessagesPlaceholder(variable_name="history"),
     ("human", "{input}"),         
