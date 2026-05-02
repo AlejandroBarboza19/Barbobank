@@ -31,10 +31,8 @@ services:
       - "8000:8000"
     env_file:
       - .env
-    volumes:
-      - .:/app
     # Usamos la sintaxis de lista para evitar problemas de parsing con los flags
-    command: ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+    command: ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
 
 volumes:
   mysql_data:
