@@ -29,17 +29,7 @@ def calcular_score(datos: Solicitud, ratio: float) -> float: # calcula el score 
 
     return score_crediticio
 
-# def evaluar_credito(datos: Solicitud):
-    
-#     ratio = calcular_ratio(datos)
-#     score = calcular_score(datos, ratio)
 
-#     resultado = {
-#         "score": round(score,2),
-#         "ratio": round(ratio,2)
-#     }
-
-#     return resultado
 
 ml = joblib.load('app/ml/modelo_barbobank_creditosv2.pkl') # aqui leemos el modelo de machine learning 
 
